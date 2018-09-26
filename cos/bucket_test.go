@@ -7,6 +7,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/k0kubun/pp"
+
 	"github.com/imroc/req"
 )
 
@@ -40,7 +42,7 @@ func TestBucketExists(t *testing.T) {
 }
 
 func TestBucketListObjects(t *testing.T) {
-	result, err := bucket.ListObjects(Prefix("data/www/app/latest/tgit-web-files/uploads/user/avatar/2/"), Delimiter(""), MaxKeys(30))
+	result, err := bucket.ListObjects(Prefix("/test/"), Delimiter(""), MaxKeys(30))
 	// listResp, err := bucket.ListObjects(Delimiter("/"), MaxKeys(30))
 	if err != nil {
 		t.Fatal(err)
@@ -49,7 +51,7 @@ func TestBucketListObjects(t *testing.T) {
 }
 
 func TestBucketGetObjects(t *testing.T) {
-	rc, err := bucket.GetObject("/data/www/app/latest/tgit-web-files/uploads/user/avatar/2/24f65e828d6b4544b237ffee12a8cd86.png")
+	rc, err := bucket.GetObject("/test/test.png")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -74,7 +76,21 @@ func TestBucketPutObjects(t *testing.T) {
 	}
 }
 
+func TestBucketDeleteObjects(t *testing.T) {
+	err := bucket.DeleteObject("/test/LICENSE")
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestBucketGetObjectsMeta(t *testing.T) {
+	header, err := bucket.GetObjectMeta("/test/test.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pp.Println(header)
+}
 func TestSomething(t *testing.T) {
-	typ := getContentType("/da.ta/www/dsklfjs哈哈adffukc.xml")
+	typ := getContentType("/test/dsklfjs哈哈adffukc嘻嘻.xml")
 	fmt.Println("type:", typ)
 }

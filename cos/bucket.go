@@ -122,6 +122,14 @@ func (b *Bucket) GetObject(key string, options ...Option) (io.ReadCloser, error)
 	return result.Response.Body, nil
 }
 
+func (b *Bucket) GetObjectMeta(key string) (http.Header, error) {
+	resp, err := b.do("HEAD", key)
+	if err != nil {
+		return nil, err
+	}
+	return resp.Response().Header, nil
+}
+
 func (b *Bucket) DeleteObject(key string) error {
 	_, err := b.do("DELETE", key)
 	if err != nil {
