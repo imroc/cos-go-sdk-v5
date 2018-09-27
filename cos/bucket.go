@@ -33,6 +33,9 @@ func (b *Bucket) do(method, path string, options ...Option) (*req.Resp, error) {
 }
 
 func (b *Bucket) newRequest(method, path string) (*request, error) {
+	if !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
 	url := strings.Join([]string{b.url, path}, "")
 	return NewRequest(method, url)
 }
