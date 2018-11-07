@@ -55,13 +55,13 @@ func (client *Client) Do(req *request, options ...Option) (*req.Resp, error) {
 	client.signRequest(req) // setup Authorization
 	resp, err := client.Req.Do(req.Method, req.Url, req.Headers, req.Params, req.Payload)
 	if err != nil {
-		return nil, err
+		return resp, err
 	}
 
 	code := resp.Response().StatusCode
 	if code != 200 && code != 204 && code != 206 {
 		// return nil, fmt.Errorf("bad status: %s", resp.Response().Status)
-		return nil, client.buildError(resp)
+		return resp, client.buildError(resp)
 	}
 
 	return resp, err
